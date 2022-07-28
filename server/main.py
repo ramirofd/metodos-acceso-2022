@@ -11,8 +11,21 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+
     db = Database()
-    db.stock.create("NARANJA", 150.0, 50.0)
+    # db.sales.create("ALFREDO", [
+    #     {
+    #         "id": 4,
+    #         "quantity": 1.66,
+    #         "price": 63.00
+    #     },
+    #     {
+    #         "id": 6,
+    #         "quantity": 0.45,
+    #         "price": 5.00
+    #     }
+    # ])
+    db.sales.seller_sales("RAMIRO")
+    print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
