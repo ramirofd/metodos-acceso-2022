@@ -1,31 +1,27 @@
-# This is a sample Python script.
-
-# Press Mayús+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-from database import Database
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import socket
+from rich import print
 
 
-# Press the green button in the gutter to run the script.
+class ServerOneClient:
+
+    sckt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    def __init__(self, host: str, port: int):
+        self.sckt.bind((host, port))
+        self.sckt.listen(3)
+        while True:
+            client_sckt, client_addr = self.sckt.accept()
+            print(f"[bold]Client connected:[/bold] [green]{client_addr}[/green]")
+
+            request = ''
+            while request != 'disconnect':
+                request = client_sckt.recv(1024).decode()
+                print(f"[bold]*{client_addr}*Command received:[/bold] [green]{request}[/green]")
+
+                client_sckt.send(request.encode())
+            client_sckt.send("disconnect".encode())
+            client_sckt.close()
+
+
 if __name__ == '__main__':
-
-    db = Database()
-    # db.sales.create("ALFREDO", [
-    #     {
-    #         "id": 4,
-    #         "quantity": 1.66,
-    #         "price": 63.00
-    #     },
-    #     {
-    #         "id": 6,
-    #         "quantity": 0.45,
-    #         "price": 5.00
-    #     }
-    # ])
-    db.sales.seller_sales("RAMIRO")
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    server = ServerOneClient('0.0.0.0', 65432)
