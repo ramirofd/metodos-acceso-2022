@@ -16,7 +16,7 @@ class Stock(Interface):
         self.cursor.execute(f'CREATE TABLE IF NOT EXISTS stock(id INTEGER PRIMARY KEY AUTOINCREMENT, '
                             f'name TEXT, price REAL, quantity REAL)')
 
-    def create(self, name: str, price: float, quantity: float):
+    def create_product(self, name: str, price: float, quantity: float):
         if self.search_product(name) is None:
             self.cursor.execute(f'INSERT INTO stock(name, price, quantity) VALUES(?, ?, ?)', (name, price, quantity))
             self.db.commit()
@@ -50,7 +50,7 @@ class Sales(Interface):
         self.cursor.execute(f'CREATE TABLE IF NOT EXISTS sale_stock(sale_id INTEGER, stock_id INTEGER, quantity REAL, '
                             f'price REAL)')
 
-    def create(self, seller: str, products: list):
+    def create_sale(self, seller: str, products: list):
         self.cursor.execute(f'INSERT INTO sale(seller, date) VALUES(?, ?)', (seller, datetime.now()))
         sale_id = self.cursor.lastrowid
         for product in products:

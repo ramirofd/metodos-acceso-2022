@@ -1,6 +1,8 @@
 import socket
 from rich import print
 
+from server.interpreter import Command
+
 
 class ServerOneClient:
 
@@ -13,13 +15,14 @@ class ServerOneClient:
             client_sckt, client_addr = self.sckt.accept()
             print(f"[bold]Client connected:[/bold] [green]{client_addr}[/green]")
 
-            request = ''
-            while request != 'disconnect':
-                request = client_sckt.recv(1024).decode()
+            request = client_sckt.recv(1024).decode()
+            while request != Command.DISCONNECT.value:
                 print(f"[bold]*{client_addr}*Command received:[/bold] [green]{request}[/green]")
-
+                # ToDo: Process command with Interpreter
                 client_sckt.send(request.encode())
-            client_sckt.send("disconnect".encode())
+                request = client_sckt.recv(1024).decode()
+
+            client_sckt.sendall(request.encode())
             client_sckt.close()
 
 

@@ -10,7 +10,7 @@ class Client:
         response = ''
         while response != 'disconnect':
             command = input("Ingrese comando: ")
-            self.sckt.send(command.encode())
+            self.sckt.sendall(command.encode())
             response = self.sckt.recv(1024).decode()
             print(response)
         self.sckt.close()
